@@ -7,11 +7,15 @@ public class BownlingBall : MonoBehaviour
 {
     public bool inPlay = false;
     private Rigidbody rgbody;
+    Vector3 startPos;
+    AudioSource audioSource;
 
     private void Start()
     {
         rgbody = GetComponent<Rigidbody>();
         rgbody.useGravity = false;
+        startPos = transform.position;
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Lauch(Vector3 lauchVelocity)
@@ -20,6 +24,18 @@ public class BownlingBall : MonoBehaviour
         rgbody.useGravity = true;
         rgbody.velocity = lauchVelocity;
 
-        GetComponent<AudioSource>().Play();
+        audioSource.Play();
+    }
+
+    public void Reset()
+    {
+        inPlay = false;
+
+        transform.position = startPos;
+        rgbody.velocity = Vector3.zero;
+        rgbody.angularVelocity = Vector3.zero;
+        rgbody.useGravity = false;
+
+        audioSource.Stop();
     }
 }

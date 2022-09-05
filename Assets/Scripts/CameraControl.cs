@@ -18,7 +18,7 @@ public class CameraControl : MonoBehaviour
         var posY = bownlingBall.transform.position.y + offset.y;
         var posZ = bownlingBall.transform.position.z + offset.z;
 
-        if (transform.position.z < 1829)
+        if (bownlingBall.transform.position.z < 1829)
         {
             transform.position = new Vector3(posX, posY, posZ);
         } 
