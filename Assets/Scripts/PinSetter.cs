@@ -7,8 +7,8 @@ public class PinSetter : MonoBehaviour
 {
     public int lastStandingCount = -1;
     [SerializeField] TextMeshProUGUI standingDisplay;
-    public float distanceToRaise = 40f;
-
+    [SerializeField] GameObject setOfPins;
+    
     private BownlingBall bownlingBall;
     private float lastChangeTime;
     private bool isBallEnteredBox = false;
@@ -35,19 +35,26 @@ public class PinSetter : MonoBehaviour
         {
             if (pin.IsStanding())
             {
-                pin.transform.position = new Vector3(pin.transform.position.x, distanceToRaise, pin.transform.position.z); ;
+                pin.RaiseIfStanding();
+            }
+        }
+    }
+    
+    public void LowerPins()
+    {
+        foreach (Pin pin in FindObjectsOfType<Pin>())
+        {
+            if (pin.IsStanding())
+            {
+                pin.Lower();
             }
         }
     }
 
-    public void LowerPins()
-    {
-        
-    }
 
     public void RenewPins()
     {
-
+        Instantiate(setOfPins, new Vector3(0, 1.4f, 1750), transform.rotation);
     }
 
     private void CheckStanding()
