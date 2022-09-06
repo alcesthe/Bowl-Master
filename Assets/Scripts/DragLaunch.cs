@@ -38,7 +38,11 @@ public class DragLaunch : MonoBehaviour
         float lauchSpeedX = (endPos.x - startPos.x) / lauchSpeed;
         float lauchSpeedZ = (endPos.y - startPos.y) / lauchSpeed;
 
-        Vector3 lauchVelocity = new Vector3(lauchSpeedX, 0 , lauchSpeedZ);
-        bownlingBall.Lauch(lauchVelocity);
+        if (!bownlingBall.inPlay)
+        {
+            Vector3 lauchVelocity = new Vector3(lauchSpeedX, 0, lauchSpeedZ);
+            bownlingBall.Lauch(lauchVelocity);
+        }
+        
     }
 }

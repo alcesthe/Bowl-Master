@@ -5,17 +5,22 @@ using TMPro;
 
 public class PinSetter : MonoBehaviour
 {
-    public int lastStandingCount = -1;
+    private int lastStandingCount = -1;
     [SerializeField] TextMeshProUGUI standingDisplay;
     [SerializeField] GameObject setOfPins;
-    
+    private bool ballOutOfPlay = false;
+
     private BownlingBall bownlingBall;
     private float lastChangeTime;
-    private bool isBallEnteredBox = false;
+    private int lastSettledCount = 10;
+    private Animator animator;
+    private ActionMaster actionMaster = new ActionMaster();
+
     // Start is called before the first frame update
     void Start()
     {
         bownlingBall = FindObjectOfType<BownlingBall>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -23,10 +28,16 @@ public class PinSetter : MonoBehaviour
     {
         standingDisplay.text = CountStanding().ToString();
 
-        if (isBallEnteredBox)
+        if (ballOutOfPlay)
         {
             CheckStanding();
+            standingDisplay.color = Color.red;
         }
+    }
+    
+    public void SetBallOutOfPlay(bool value)
+    {
+        ballOutOfPlay = value;
     }
 
     public void RaisePins()
@@ -36,6 +47,7 @@ public class PinSetter : MonoBehaviour
             if (pin.IsStanding())
             {
                 pin.RaiseIfStanding();
+                pin.transform.rotation = Quaternion.Euler(-90, 0, 0);
             }
         }
     }
@@ -76,9 +88,34 @@ public class PinSetter : MonoBehaviour
 
     private void PinsHaveSettled()
     {
+    
+    int standing = CountStanding();
+        int pinFall = lastSettledCount - standing;
+        lastSettledCount = standing;
+
+        ActionMaster.Action action = actionMaster.Bowl(pinFall);
+
+        if (action == ActionMaster.Action.Tidy)
+        {
+            animator.SetTrigger("tidyTrigger");
+        } else if (action == ActionMaster.Action.EndTurn)
+        {
+            animator.SetTrigger("resetTrigger");
+            lastSettledCount = 10;
+        }
+        else if (action == ActionMaster.Action.Reset)
+        {
+            animator.SetTrigger("resetTrigger");
+            lastSettledCount = 10;
+        }
+        else if (action == ActionMaster.Action.EndGame)
+        {
+            throw new UnityException("Don't know how to deal that yet !");
+        }
+
         bownlingBall.Reset();
         lastStandingCount = -1;
-        isBallEnteredBox = false;
+        ballOutOfPlay = false;
         standingDisplay.color = Color.green;
     }
 
@@ -103,17 +140,6 @@ public class PinSetter : MonoBehaviour
         if (thingLeft.GetComponent<Pin>())
         {
             Destroy(thingLeft);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        GameObject thingHit = other.gameObject;
-
-        if (thingHit.GetComponent<BownlingBall>())
-        {
-            standingDisplay.color = Color.red;
-            isBallEnteredBox = true;
         }
     }
 }

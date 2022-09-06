@@ -31,6 +31,7 @@ public class BownlingBall : MonoBehaviour
     {
         inPlay = false;
 
+        transform.rotation = Quaternion.identity;
         transform.position = startPos;
         rgbody.velocity = Vector3.zero;
         rgbody.angularVelocity = Vector3.zero;
