@@ -18,6 +18,11 @@ public class BownlingBall : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    private void Update()
+    {
+        Debug.Log(inPlay);
+    }
+
     public void Lauch(Vector3 lauchVelocity)
     {
         inPlay = true;

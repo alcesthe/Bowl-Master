@@ -36,7 +36,8 @@ public class Pin : MonoBehaviour
     public void RaiseIfStanding()
     {
         rgbody.useGravity = false;
-        transform.Translate(new Vector3(0, distanceToRaise, 0), Space.World); 
+        transform.Translate(new Vector3(0, distanceToRaise, 0), Space.World);
+        transform.rotation = Quaternion.Euler(-90, 0, 0);
     }
 
     public void Lower()

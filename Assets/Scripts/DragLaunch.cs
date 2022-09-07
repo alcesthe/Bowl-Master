@@ -19,7 +19,10 @@ public class DragLaunch : MonoBehaviour
     {
         if (!bownlingBall.inPlay)
         {
-            gameObject.transform.Translate(amount,0,0);
+            float xPos = Mathf.Clamp(bownlingBall.transform.position.x + amount, -50f, 50f);
+            float yPos = bownlingBall.transform.position.y;
+            float zPos = bownlingBall.transform.position.z;
+            bownlingBall.transform.position = new Vector3(xPos, yPos, zPos);
         }
     }
 

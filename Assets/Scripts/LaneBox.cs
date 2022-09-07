@@ -11,11 +11,4 @@ public class LaneBox : MonoBehaviour
         pinSetter = GameObject.FindObjectOfType<PinSetter>();
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.name == "Bowling Ball")
-        {
-            pinSetter.SetBallOutOfPlay(true);
-        }
-    }
 }
